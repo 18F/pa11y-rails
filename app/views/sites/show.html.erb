@@ -1,0 +1,29 @@
+<%= link_to 'Back to Sites', sites_path %>
+<p>
+  <strong>Title:</strong>
+  <%= @site.title %>
+</p>
+ 
+<p>
+  <strong>Url:</strong>
+  <%= link_to @site.url, @site.url, html_options = {"target" => '_blank'} %>
+</p>
+<p>
+  <strong>Errors:</strong>
+  <%= @site.acc_errors %>
+</p>
+<p>
+  <strong>Warnings:</strong>
+  <%= @site.acc_warnings %>
+</p>
+<p>
+  <%= link_to 'Error Report (Markdown)', site_error_report_path(@site.id) %>
+</p>
+
+<p>
+  Scan:
+  <p>
+  <%=raw @site.scan %>
+  </p>
+</p>
+
