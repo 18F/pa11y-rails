@@ -1,51 +1,62 @@
 class Site < ActiveRecord::Base
-  validates :title, presence: true,
-                    length: { minimum: 1 }
-  validates :url, presence: true,
-                    length: { minimum: 3 }
-  before_save :run_scan
+  has_many :pages
+  has_many :issues
 
-  def update_scan time=5000
-    if Time.now - self.updated_at > time
-      self.save
+  def acc_errors
+    errors = 0
+    self.pages.each do |page|
+      errors += page.acc_errors
+    end
+    errors
+  end
+
+  def acc_warnings
+    warnings = 0
+    self.pages.each do |page|
+      warnings += page.acc_warnings
+    end
+    warnings
+  end
+
+  def github_url
+    if !self.github_user.empty? && !self.github_repo.empty?
+      "https://github.com/#{self.github_user}/#{self.github_repo}"
+    else
+      false
     end
   end
 
-  def error_report
-    %x(pa11y #{self.url} --reporter markdown --ignore "warning;notice")
+  def create_github_issue
+    github = Github.new user: self.github_user, repo: self.github_repo
+    issue = github.issues.create title: '508 Issues from pa11y-rails', body: self.github_scan
+    self.issues.create({github_id: issue.body.number})
+    puts issue 
   end
 
-  def run_scan
-    puts self.url
-    scan_url = "pa11y #{self.url} --reporter html"
-    puts "Scan Url: #{scan_url}"
-    self.scan = %x(#{scan_url})
-
-    json_url = "pa11y #{self.url} --reporter json"
-    json_string = %x(#{json_url})
-    # puts json_string
-    
-    # binding.pry
-    self.acc_errors = 0
-    self.acc_notices = 0
-    self.acc_warnings = 0
-    puts "Parsing JSON"
-    begin
-      json_hash = JSON.parse(json_string)
-      puts "JSON Hash=: #{json_hash}"
-      json_hash.each do |key, array|
-        case key["type"]
-        when "error"
-          self.increment(:acc_errors, by = 1)
-        when "notice"
-          self.increment(:acc_notices, by = 1)
-        when "warning"
-          self.increment(:acc_warnings, by = 1)
-        end
-      end
-    rescue JSON::ParserError => e
+  def update_scan
+    @pages = self.pages
+    @pages.each do |page|
+      page.update_scan(0)
     end
-
   end
 
+  def github_scan
+    @pages = self.pages
+    scan = ''
+    @pages.each do |page|
+      scan += page.error_report
+    end
+    scan = scan.gsub(/\# Welcome to Pa11y/,'')
+    scan = scan.gsub(/\* 0 Warnings/,'')
+    scan = scan.gsub(/\* 0 Notices/,'')
+    scan
+  end
+
+  def github_status
+    if self.issues.length > 0
+      self.issues.last.status 
+    else
+      ''
+    end
+  end
 end

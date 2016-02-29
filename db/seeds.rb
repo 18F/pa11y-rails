@@ -23,29 +23,32 @@ require 'open-uri'
 teamAPI = JSON.load(open("https://team-api.18f.gov/public/api/projects/"))
 
 teamAPI["results"].each do |entry|
+  Site.create([{
+    :title => entry['name']
+  }])
+  site = Site.last
+  if entry["github"]
+    github = entry["github"].first.split('/')
+    site.github_user = github.first
+    site.github_repo = github.second
+    site.save
+  end
   if entry["links"]
-    puts "Links TOP: #{entry["links"]}"
     entry["links"].each do |link|
       if link.is_a?(Hash)
         puts "Link OBJECT: #{link}"
         if link["url"].include? ".gov"
-          Site.create([{
+          site.pages.create([{
             :title => link["text"],
             :url => link["url"]
           }])
         end
-      else
-        puts "Link STRING: #{link}"
-        if link.include? ".gov"
-          Site.create([{
+      elsif link.include? ".gov"
+          site.pages.create([{
             :title => link,
             :url => link
           }])
-        end
       end
-      puts "/n"
-      puts "/n"
-      puts "/n"
     end
   end
 end

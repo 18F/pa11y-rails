@@ -1,0 +1,7 @@
+<%= form_for([@site, @site.pages.build]) do |f| %>
+    <%= f.label :title %><br>
+    <%= f.text_field :title %>
+    <%= f.label :url %><br>
+    <%= f.text_field :url %>
+    <%= f.submit %>
+<% end %>

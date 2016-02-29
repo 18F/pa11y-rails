@@ -10,6 +10,19 @@ class SitesController < ApplicationController
     @site = Site.new()
   end
 
+  def edit
+    @site = Site.find(params[:id])
+  end
+
+  def update
+    @site = Site.find(params[:id])
+    if @site.update(site_params)
+      redirect_to @site
+    else
+      render 'edit'
+    end
+  end
+
   def create
     @site = Site.new(site_params)
  
@@ -38,13 +51,19 @@ class SitesController < ApplicationController
     render 'error'
   end
 
+  def create_github_issue
+    @site = Site.find(params[:site_id])
+    @site.create_github_issue()
+    redirect_to site_path(@site)
+  end
+
   private
     def site_params
-      params.require(:site).permit(:title, :url)
+      params.require(:site).permit(:title, :url, :github_repo, :github_user)
     end
     def update_scans sites = Site.all
       sites.each do |site|
-        site.update_scan(0)
+        site.update_scan
       end
     end
 end

@@ -11,8 +11,16 @@
   <script type="text/javascript" src='//cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js'></script>
 </head>
 <body>
-
-<%= yield %>
-
+  <header class="usa-site-header" role="banner">
+      <nav class="usa-site-navbar">
+        <div class="logo" id="logo">
+          <h1>
+            pa11y rails</a>
+          </h1>
+        </div>
+        <hr>
+      </nav>
+  </header>
+  <%= yield %>
 </body>
 </html>

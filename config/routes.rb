@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   # get 'sites/error_report/:id', to: 'sites#errorReport'
   resources :sites do
     get 'error_report'
+    get 'create_github_issue'
+    resources :pages
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

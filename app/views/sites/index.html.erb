@@ -1,33 +1,40 @@
-<h1>Listing sites</h1>
-<ul>
-  <li><%= link_to 'New site', new_site_path %></li>
-  <li><%= link_to 'Update Scans', sites_update_scans_path %></li>
-</ul>
- 
-<table id='mainTable'>
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Url</th>
-      <th>Errors</th>
-      <th>Warnings</th>
-      <th>Delete?</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @sites.each do |site| %>
-      <tr>
-        <td><%= link_to site.title, site_path(site.id) %></td>
-        <td><%= link_to site.url, site.url, html_options = {"target" => '_blank'} %></td>
-        <td><%= site.acc_errors %></td>
-        <td><%= site.acc_warnings %></td>
-        <td><%= link_to 'Delete', site_path(site),
-              method: :delete,
-              data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<div class="usa-grid">
+  <div class="usa-width-one-half">
+    <h1>Listing sites</h1>
+    <ul class='usa-unstyled-list'>
+      <li><%= link_to 'New site', new_site_path %></li>
+      <li><%= link_to 'Update Scans', sites_update_scans_path %></li>
+    </ul>
+  </div>
+</div>
+<div class="usa-grid">
+  <div class="usa-width-one-whole">
+    <table id='mainTable' class='usa-table-borderless'>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Errors</th>
+          <th>Warnings</th>
+          <th>Github Status</th>
+          <th>Delete?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @sites.each do |site| %>
+          <tr>
+            <td><%= link_to site.title, site_path(site.id) %></td>
+            <td><%= site.acc_errors %></td>
+            <td><%= site.acc_warnings %></td>
+            <td><%= site.github_status %></td>
+            <td><%= link_to 'Delete', site_path(site),
+                  method: :delete,
+                  data: { confirm: 'Are you sure?' } %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
 
 <script type="text/javascript">
   $(document).ready(function(){

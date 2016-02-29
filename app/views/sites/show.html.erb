@@ -1,29 +1,86 @@
-<%= link_to 'Back to Sites', sites_path %>
-<p>
-  <strong>Title:</strong>
-  <%= @site.title %>
-</p>
- 
-<p>
-  <strong>Url:</strong>
-  <%= link_to @site.url, @site.url, html_options = {"target" => '_blank'} %>
-</p>
-<p>
-  <strong>Errors:</strong>
-  <%= @site.acc_errors %>
-</p>
-<p>
-  <strong>Warnings:</strong>
-  <%= @site.acc_warnings %>
-</p>
-<p>
-  <%= link_to 'Error Report (Markdown)', site_error_report_path(@site.id) %>
-</p>
+<div class="usa-grid">
+  <div class="usa-width-one-half">
+    <%= link_to 'Back to Sites', sites_path %>
+    <hr>
+  </div>
+</div>
+<div class="usa-grid">
+  <div class="usa-width-one-half">
+    <ul class='usa-unstyled-list'>
+      <li><strong>Title:</strong>
+      <%= @site.title %></li>
+      <% if @site.github_url %>
+        <li><strong>Github: </strong>
+          <%= link_to @site.github_url, @site.github_url %>
+        </li>
+      <% end %>
+      <li><strong>Total Errors:</strong>
+      <%= @site.acc_errors %></li>
+      <li><strong>Total Warnings:</strong>
+      <%= @site.acc_warnings %></li>
+      <li><strong>Github Issues:</strong></li>
+      <ul>
+        <% @site.issues.each do |issue| %>
+          <li><strong>ID:</strong><%= issue.github_id %></li>
+          <li><strong>Status: </strong><%= link_to issue.status, issue.link %></li>
+        <% end %>
+      </ul>
+      <li>
+        <%= link_to 'Error Report (Markdown)', site_error_report_path(@site.id) %>
+      </li>
+      <% if @site.github_url %>
+        <li>
+          <%= link_to 'File Github Issue', site_create_github_issue_path(@site.id) %>
+        </li>
+      <% end %>
+      <li><%= link_to 'Edit Site', edit_site_path(@site) %></li>
+    </ul>
+  </div>
+</div>
 
-<p>
-  Scan:
-  <p>
-  <%=raw @site.scan %>
-  </p>
-</p>
+<div class="usa-grid">
+  <div class="usa-width-one-whole">
+    <table class='usa-table-borderless'>
+      <thead>
+        <tr>
+          <th scope='col'>URL</th>
+          <th scope='col'>Errors</th>
+          <th scope='col'>Warnings</th>
+          <th scope='col'>Report</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @site.pages.each do |page| %>
+          <tr>
+            <td><%= link_to page.url, page.url %></td>
+            <td><%= page.acc_errors %></td>
+            <td><%= page.acc_warnings %></td>
+            <td><%= link_to 'Report', "#scan-#{page.id}" %></td>
+            <td><%= link_to 'Delete', [page.site, page],
+                  method: :delete,
+                  data: { confirm: 'Are you sure?' } %></td>
+          </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+<div class="usa-grid">
+  <div class="usa-width-one-whole">
+    <h3>Add a page:</h2>
+    <%= render 'pages/form' %>
+  </div>
+</div>
+
+<% @site.pages.each do |page| %>
+<div class="usa-grid">
+  <div class="usa-width-one-whole">
+    <a href='#'>Top of page</a>
+    <h2 id='scan-<%= page.id %>'>Scan: <%= page.title %></h2>
+    <%= raw page.scan %>
+  </div>
+</div>
+<% end %>
+
+
 
