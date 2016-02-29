@@ -22,7 +22,12 @@
       <ul>
         <% @site.issues.each do |issue| %>
           <li><strong>ID:</strong><%= issue.github_id %></li>
-          <li><strong>Status: </strong><%= link_to issue.status, issue.link %></li>
+          <ul>
+            <li><strong>Status: </strong><%= link_to issue.status, issue.link %></li>
+            <li><%= link_to 'Delete Issue', [issue.site, issue],
+                  method: :delete,
+                  data: { confirm: 'Are you sure?' } %></li>
+          </ul>
         <% end %>
       </ul>
       <li>

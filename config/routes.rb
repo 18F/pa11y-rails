@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     get 'error_report'
     get 'create_github_issue'
     resources :pages
+    resources :issues
   end
 
   # The priority is based upon order of creation: first created -> highest priority.
