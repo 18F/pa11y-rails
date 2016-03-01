@@ -1,0 +1,5 @@
+<%= form_for([@site, @site.issues.build]) do |f| %>
+    <%= f.label :github_id %><br>
+    <%= f.text_field :github_id %>
+    <%= f.submit %>
+<% end %>

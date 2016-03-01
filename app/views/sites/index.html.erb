@@ -12,17 +12,19 @@
     <table id='mainTable' class='usa-table-borderless'>
       <thead>
         <tr>
-          <th>Title</th>
-          <th>Errors</th>
-          <th>Warnings</th>
-          <th>Github Status</th>
-          <th>Delete?</th>
+          <th scope='col'>Title</th>
+          <th scope='col'>Pages</th>
+          <th scope='col'>Errors</th>
+          <th scope='col'>Warnings</th>
+          <th scope='col'>Github Status</th>
+          <th scope='col'>Delete?</th>
         </tr>
       </thead>
       <tbody>
         <% @sites.each do |site| %>
           <tr>
             <td><%= link_to site.title, site_path(site.id) %></td>
+            <td><%= site.pages.count %></td>
             <td><%= site.acc_errors %></td>
             <td><%= site.acc_warnings %></td>
             <td><%= site.github_status %></td>
