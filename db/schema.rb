@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160229191246) do
+ActiveRecord::Schema.define(version: 20160303144606) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,21 @@ ActiveRecord::Schema.define(version: 20160229191246) do
   end
 
   add_index "issues", ["site_id"], name: "index_issues_on_site_id", using: :btree
+
+  create_table "pa11y_issues", force: :cascade do |t|
+    t.integer  "page_id"
+    t.text     "description"
+    t.string   "code"
+    t.string   "css"
+    t.text     "element"
+    t.string   "issue_type"
+    t.boolean  "ignore"
+    t.boolean  "fixed"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "pa11y_issues", ["page_id"], name: "index_pa11y_issues_on_page_id", using: :btree
 
   create_table "pages", force: :cascade do |t|
     t.string   "url"
@@ -55,5 +70,6 @@ ActiveRecord::Schema.define(version: 20160229191246) do
   end
 
   add_foreign_key "issues", "sites"
+  add_foreign_key "pa11y_issues", "pages"
   add_foreign_key "pages", "sites"
 end

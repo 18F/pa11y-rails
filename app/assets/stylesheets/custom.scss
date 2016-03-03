@@ -14,6 +14,10 @@ label{
 ul ul{
   margin-left: 1rem;
 }
+ul, ol{
+  margin-top: .5rem;
+  margin-bottom: .5rem;
+}
 
 .results-list {
   width: 90% !important;
@@ -21,4 +25,30 @@ ul ul{
 
 .result{
   width: 90% !important;
+}
+.pa11y-warning, .pa11y-error{
+  border: 1px solid black;
+  padding: 5px;
+}
+div.pa11y-warning {
+  background-color: #FFFB6D;
+}
+div.pa11y-error {
+  background-color: #FF9BAB;
+}
+
+div.ignore-true{
+  background-color: #27DF1F;
+}
+
+.summary-box {
+  border: 1px solid black;
+  padding: .5rem;
+  margin: .5rem;
+  margin-right: auto;
+  margin-left: auto;
+  width: 100px;
+  height: 50px;
+  float: left;
+  text-align: center;
 }

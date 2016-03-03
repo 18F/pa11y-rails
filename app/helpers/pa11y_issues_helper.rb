@@ -1,0 +1,2 @@
+module Pa11yIssuesHelper
+end

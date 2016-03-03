@@ -1,0 +1,36 @@
+<div class="usa-grid">
+  <div class="usa-width-one-whole" id="scan-<%= page.id %>">
+    <h3>
+      Scan of: <%= link_to page.url, page.url %>
+    </h3>
+    <a href='#'>Top of page</a>
+  </div>
+</div>
+
+<div class="usa-grid">
+  <div class="usa-width-one-hole">
+    <h4>Summary:</h4>
+  </div>
+</div>
+
+<div class="usa-grid">
+  <div class="usa-width-one-whole">
+    <div class='pa11y-error summary-box'>
+      <%= page.acc_errors %><br>Errors
+    </div>
+    <div class='pa11y-warning summary-box'>
+      <%= page.acc_warnings %><br>Warnings
+    </div>
+  </div>
+</div>
+
+<div class="usa-grid">
+  <div class="usa-width-one-whole">
+    <% page.pa11y_errors.find_each do |issue| %>
+      <%= render partial: 'pa11y_issues/issue', locals: {issue: issue} %>
+    <% end %>
+    <% page.pa11y_warnings.find_each do |issue| %>
+      <%= render partial: 'pa11y_issues/issue', locals: {issue: issue} %>
+    <% end %>
+  </div>
+</div>

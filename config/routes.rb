@@ -5,7 +5,11 @@ Rails.application.routes.draw do
   resources :sites do
     get 'error_report'
     get 'create_github_issue'
-    resources :pages
+    resources :pages do 
+      resources :pa11y_issues do
+        get 'ignore'
+      end
+    end
     resources :issues
   end
 

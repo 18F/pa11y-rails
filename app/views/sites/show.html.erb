@@ -80,15 +80,8 @@
     <%= render 'issues/form' %>
   </div>
 </div>
-
 <% @site.pages.each do |page| %>
-<div class="usa-grid">
-  <div class="usa-width-one-whole">
-    <a href='#'>Top of page</a>
-    <h2 id='scan-<%= page.id %>'>Scan: <%= page.title %></h2>
-    <%= raw page.scan %>
-  </div>
-</div>
+  <%= render partial: 'pa11y_issues/report', locals: {page: page} %>
 <% end %>
 
 

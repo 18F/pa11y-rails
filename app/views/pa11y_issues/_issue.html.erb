@@ -1,0 +1,19 @@
+<div class="usa-grid">
+  <div class="usa-width-one-whole pa11y-<%= issue.issue_type %> ignore-<%= issue.ignore %>">
+    <b><%= issue.issue_type.humanize %>:
+    <%= issue.description %></b>
+    <br>
+    <%= issue.code %>
+    <br>
+    <%= issue.css %>
+    <br>
+    <i><%= issue.element %></i>
+    <br>
+    Ignore: <%= issue.ignore %>
+    <% if issue.ignore %>
+      <%= link_to 'Track this Issue', site_page_pa11y_issue_ignore_path(issue.page.site.id, issue.page.id, issue.id) %>
+    <% else %>
+      <%= link_to 'Ignore this Issue', site_page_pa11y_issue_ignore_path(issue.page.site.id, issue.page.id, issue.id) %>
+    <% end %>
+  </div>
+</div>

@@ -5,16 +5,20 @@ class Site < ActiveRecord::Base
 
   def acc_errors
     errors = 0
-    self.pages.each do |page|
-      errors += page.acc_errors
+    self.pages.find_each do |page|
+      unless !page.acc_errors
+        errors += page.acc_errors
+      end
     end
     errors
   end
 
   def acc_warnings
     warnings = 0
-    self.pages.each do |page|
-      warnings += page.acc_warnings
+    self.pages do |page|
+      unless !page.acc_warnings
+        warnings += page.acc_warnings
+      end
     end
     warnings
   end
