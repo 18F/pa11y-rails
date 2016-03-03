@@ -1,6 +1,7 @@
 class Site < ActiveRecord::Base
   has_many :pages, dependent: :destroy
   has_many :issues, dependent: :destroy
+  after_save :find_github_issues
 
   def acc_errors
     errors = 0
@@ -59,6 +60,17 @@ class Site < ActiveRecord::Base
       self.issues.last.status 
     else
       ''
+    end
+  end
+  def find_github_issues
+    if github_url
+      issues = Github::Client::Issues.new
+      list = issues.list user: self.github_user, repo: self.github_repo, state: 'open'
+      list.each do |issue|
+        if issue.is_a?(Hash) && issue.title && issue.number && issue.title == "508 Issues from pa11y-rails"
+          self.issues.create({github_id: issue.number})
+        end
+      end
     end
   end
 end

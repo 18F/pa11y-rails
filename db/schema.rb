@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20160229191246) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "issues", force: :cascade do |t|
     t.string   "url"
     t.string   "title"
@@ -22,7 +25,7 @@ ActiveRecord::Schema.define(version: 20160229191246) do
     t.text     "github_id"
   end
 
-  add_index "issues", ["site_id"], name: "index_issues_on_site_id"
+  add_index "issues", ["site_id"], name: "index_issues_on_site_id", using: :btree
 
   create_table "pages", force: :cascade do |t|
     t.string   "url"
@@ -36,7 +39,7 @@ ActiveRecord::Schema.define(version: 20160229191246) do
     t.text     "scan"
   end
 
-  add_index "pages", ["site_id"], name: "index_pages_on_site_id"
+  add_index "pages", ["site_id"], name: "index_pages_on_site_id", using: :btree
 
   create_table "sites", force: :cascade do |t|
     t.string   "title"
@@ -51,4 +54,6 @@ ActiveRecord::Schema.define(version: 20160229191246) do
     t.string   "github_repo"
   end
 
+  add_foreign_key "issues", "sites"
+  add_foreign_key "pages", "sites"
 end

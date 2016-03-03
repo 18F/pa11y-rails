@@ -16,6 +16,7 @@
           <th scope='col'>Pages</th>
           <th scope='col'>Errors</th>
           <th scope='col'>Warnings</th>
+          <th scope='col'>Github</th>
           <th scope='col'>Github Status</th>
           <th scope='col'>Delete?</th>
         </tr>
@@ -27,6 +28,11 @@
             <td><%= site.pages.count %></td>
             <td><%= site.acc_errors %></td>
             <td><%= site.acc_warnings %></td>
+            <td>
+              <% if site.github_repo && site.github_repo != '' %>
+                <%= link_to "repo", "https://github.com/#{site.github_user}/#{site.github_repo}" %>
+              <% end %>
+            </td>
             <td><%= site.github_status %></td>
             <td><%= link_to 'Delete', site_path(site),
                   method: :delete,
