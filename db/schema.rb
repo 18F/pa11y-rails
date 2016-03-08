@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160303144606) do
+ActiveRecord::Schema.define(version: 20160304142756) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(version: 20160303144606) do
     t.integer  "acc_errors"
     t.integer  "acc_notices"
     t.text     "scan"
+    t.integer  "acc_ignore"
   end
 
   add_index "pages", ["site_id"], name: "index_pages_on_site_id", using: :btree

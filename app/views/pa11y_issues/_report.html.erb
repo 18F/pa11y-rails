@@ -21,6 +21,9 @@
     <div class='pa11y-warning summary-box'>
       <%= page.acc_warnings %><br>Warnings
     </div>
+    <div class='pa11y-ignore ignore-true summary-box'>
+      <%= page.acc_ignore %><br>Ignored
+    </div>
   </div>
 </div>
 
@@ -30,6 +33,14 @@
       <%= render partial: 'pa11y_issues/issue', locals: {issue: issue} %>
     <% end %>
     <% page.pa11y_warnings.find_each do |issue| %>
+      <%= render partial: 'pa11y_issues/issue', locals: {issue: issue} %>
+    <% end %>
+  </div>
+</div>
+<div class="usa-grid">
+  <div class="usa-width-one-whole">
+    <h5>Fixed</h5>
+    <% page.pa11y_fixed.find_each do |issue| %>
       <%= render partial: 'pa11y_issues/issue', locals: {issue: issue} %>
     <% end %>
   </div>

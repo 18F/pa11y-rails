@@ -31,13 +31,30 @@ class Site < ActiveRecord::Base
     end
   end
 
+  # def create_github_issue
+  #   github = Github.new user: "#{self.github_user}", repo: "#{self.github_repo}"
+  #   issue = github.issues.create title: '508 Issues from pa11y-rails', body: self.github_scan
+  #   if issue.body.number
+  #     self.issues.create({github_id: issue.body.number})
+  #   end
+  #   puts issue 
+  # end
+
   def create_github_issue
     github = Github.new user: "#{self.github_user}", repo: "#{self.github_repo}"
-    issue = github.issues.create title: '508 Issues from pa11y-rails', body: self.github_scan
+    issue = github.issues.create title: '508 Issues from pa11y-rails', body: self.github_issue_string
     if issue.body.number
       self.issues.create({github_id: issue.body.number})
     end
     puts issue 
+  end
+
+  def github_issue_string
+    github_string = "Results can be recreated using [HTML_CodeSniffer](http://squizlabs.github.io/HTML_CodeSniffer/)\n\n"
+    self.pages.each do |page|
+      github_string += page.issues_md
+    end
+    github_string
   end
 
   def update_scan
@@ -76,5 +93,12 @@ class Site < ActiveRecord::Base
         end
       end
     end
+  end
+  def self.error_total
+    total_errors = 0
+    self.all.find_each do |site|
+      total_errors += site.acc_errors
+    end
+    total_errors
   end
 end

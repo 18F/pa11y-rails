@@ -4,6 +4,10 @@
     <ul class='usa-unstyled-list'>
       <li><%= link_to 'New site', new_site_path %></li>
       <li><%= link_to 'Update Scans', sites_update_scans_path %></li>
+      <li>
+        <h3>Error Total:</h3>
+        <%= Site.error_total %>
+      </li>
     </ul>
   </div>
 </div>
@@ -41,6 +45,23 @@
         <% end %>
       </tbody>
     </table>
+  </div>
+</div>
+<div class="usa-grid">
+  <div class="usa-width-one-half">
+    <h3>Error Type Summary</h3>
+    <% Pa11yIssue.type_summary.each do |issue| %>
+    <p>
+      <ul>
+        <li><b>Type:</b> <%= issue[:name] %></li>
+        <li>Count: <%= issue[:value] %></li>
+      </ul>    
+    </p>
+    <p>
+      <b>Sample Description:</b> <%= issue[:description] %>
+    </p>
+    <hr>
+    <% end %>
   </div>
 </div>
 

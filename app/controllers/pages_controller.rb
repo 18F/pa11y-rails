@@ -11,6 +11,7 @@ class PagesController < ApplicationController
    
     redirect_to site_path(@site)
   end
+  
  
   private
     def page_params

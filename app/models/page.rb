@@ -10,7 +10,7 @@ class Page < ActiveRecord::Base
 
   def update_scan time=5000
     if Time.now - self.updated_at > time
-      self.save
+      self.run_scan()
     end
   end
 
@@ -28,8 +28,13 @@ class Page < ActiveRecord::Base
     self.acc_errors = 0;
     self.acc_notices = 0;
     self.acc_warnings = 0;
+    self.acc_ignore = 0;
     self.pa11y_issues.find_each do |issue|
-      unless issue.ignore
+      if issue.ignore
+        self.increment(:acc_ignore, by = 1)
+      elsif issue.fixed
+        ''
+      else
         case issue.issue_type
         when "error"
           self.increment(:acc_errors, by = 1)
@@ -54,51 +59,60 @@ class Page < ActiveRecord::Base
     # puts json_string
     
     # binding.pry
-    self.acc_errors = 0
-    self.acc_notices = 0
-    self.acc_warnings = 0
+    # self.acc_errors = 0
+    # self.acc_notices = 0
+    # self.acc_warnings = 0
     puts "Parsing JSON"
     begin
       json_hash = JSON.parse(json_string)
-      puts "JSON Hash=: #{json_hash}"
-      json_hash.each do |key, array|
-        case key["type"]
-        when "error"
-          self.increment(:acc_errors, by = 1)
-        when "notice"
-          self.increment(:acc_notices, by = 1)
-        when "warning"
-          self.increment(:acc_warnings, by = 1)
-        end
-      end
       self.add_pa11y_issues(json_hash)
+      self.update_issue_count()
     rescue JSON::ParserError => e
     end
     self.save
   end
 
   def add_pa11y_issues scan
-    
-    scan.each do |issue|
-      self.pa11y_issues.create({
-        description: issue["message"],
-        code: issue["code"],
-        css: issue["selector"], 
-        element: issue["context"],
-        issue_type: issue["type"],
-        fixed: false,
-        ignore: false
-        })
+    self.pa11y_issues.update_all({fixed: true})
+     scan.each do |issue|
+      pa11y_issue = self.pa11y_issues.where("element = ? AND code = ?", issue["context"], issue["code"]).first
+      if pa11y_issue
+        pa11y_issue.update_attribute(:fixed, false)
+      else
+        self.pa11y_issues.create({
+          description: issue["message"],
+          code: issue["code"],
+          css: issue["selector"], 
+          element: issue["context"],
+          issue_type: issue["type"],
+          fixed: false,
+          ignore: false
+          })
+      end
     end
   end
 
   def pa11y_errors
     puts 'Pa11y_errors'
-    self.pa11y_issues.where(issue_type: "error")
+    self.pa11y_issues.where(issue_type: "error").where(fixed: false)
   end
 
   def pa11y_warnings
-    self.pa11y_issues.where(issue_type: "warning")
+    self.pa11y_issues.where(issue_type: "warning").where(fixed: false)
   end
+
+  def pa11y_fixed
+    self.pa11y_issues.where(fixed: true)
+  end
+
+  def issues_md
+    md = "\n\n## Results for #{self.url}"
+    self.pa11y_errors.where(ignore: false).each do |issue|
+      md += "\n\n#{issue.markdown_description}"
+    end
+    md += "\n\n### Summary\n\n__Errors:__ #{self.acc_errors}"
+    md
+  end
+
 
 end

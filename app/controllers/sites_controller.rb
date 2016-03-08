@@ -56,6 +56,11 @@ class SitesController < ApplicationController
     @site.create_github_issue()
     redirect_to site_path(@site)
   end
+  def update_scan
+    @site = Site.find(params[:site_id])
+    @site.update_scan()
+    redirect_to site_path(@site)
+  end
 
   private
     def site_params

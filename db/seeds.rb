@@ -76,14 +76,12 @@ end
 repos.body.each do |repo|
   puts repo.homepage
   if repo.homepage && repo.homepage.include?(".gov") && !skip.include?(repo.homepage)
-    site = Site.create({
-      title: repo.name,
-      github_repo: repo.name,
-      github_user: '18f'})
+    site = Site.create_with({title: repo.name, github_user:'18f'}).find_or_create_by(github_repo: repo.name)
+    # site = Site.create({
+    #   title: repo.name,
+    #   github_repo: repo.name,
+    #   github_user: '18f'})
     sleep(0.25)
-    site.pages.create({
-      title: repo.homepage,
-      url: repo.homepage
-      })
+    site.pages.create_with({url: repo.homepage}).find_or_create_by(title: repo.homepage)
   end
 end
