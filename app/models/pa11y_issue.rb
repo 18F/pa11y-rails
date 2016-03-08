@@ -2,7 +2,7 @@ class Pa11yIssue < ActiveRecord::Base
   belongs_to :page
   def self.type_summary
     issue_types = {}
-    self.where(issue_type: 'error').find_each do |issue|
+    self.where("issue_type = 'error' AND fixed = 'true'").find_each do |issue|
       if issue_types[issue.code]
         issue_types[issue.code][:value] += 1
       else

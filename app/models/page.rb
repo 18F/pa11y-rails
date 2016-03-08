@@ -48,6 +48,10 @@ class Page < ActiveRecord::Base
     self.save
   end
 
+  def acc_errors_fixed
+    self.pa11y_issues.where(fixed: true)
+  end
+
   def run_scan
     puts self.url
     scan_url = "pa11y #{self.url} --reporter html"
@@ -75,7 +79,7 @@ class Page < ActiveRecord::Base
   def add_pa11y_issues scan
     self.pa11y_issues.update_all({fixed: true})
      scan.each do |issue|
-      pa11y_issue = self.pa11y_issues.where("element = ? AND code = ?", issue["context"], issue["code"]).first
+      pa11y_issue = self.pa11y_issues.where("css = ? AND code = ?", issue["selector"], issue["code"]).first
       if pa11y_issue
         pa11y_issue.update_attribute(:fixed, false)
       else

@@ -13,6 +13,14 @@ class Site < ActiveRecord::Base
     errors
   end
 
+  def acc_errors_fixed
+    fixed = 0
+    self.pages.each do |page|
+      fixed += page.acc_errors_fixed.count
+    end
+    fixed
+  end
+
   def acc_warnings
     warnings = 0
     self.pages do |page|
