@@ -3,7 +3,7 @@ class SitesController < ApplicationController
     @site = Site.find(params[:id])
   end
   def index
-    @sites = Site.all
+    @sites = Site.find_each
   end
 
   def new
@@ -54,6 +54,11 @@ class SitesController < ApplicationController
   def create_github_issue
     @site = Site.find(params[:site_id])
     @site.create_github_issue()
+    redirect_to site_path(@site)
+  end
+  def update_scan
+    @site = Site.find(params[:site_id])
+    @site.update_scan()
     redirect_to site_path(@site)
   end
 

@@ -4,6 +4,10 @@
     <ul class='usa-unstyled-list'>
       <li><%= link_to 'New site', new_site_path %></li>
       <li><%= link_to 'Update Scans', sites_update_scans_path %></li>
+      <li>
+        <h3>Error Total:</h3>
+        <%= Site.error_total %>
+      </li>
     </ul>
   </div>
 </div>
@@ -16,6 +20,7 @@
           <th scope='col'>Pages</th>
           <th scope='col'>Errors</th>
           <th scope='col'>Warnings</th>
+          <th scope='col'>Github</th>
           <th scope='col'>Github Status</th>
           <th scope='col'>Delete?</th>
         </tr>
@@ -27,6 +32,11 @@
             <td><%= site.pages.count %></td>
             <td><%= site.acc_errors %></td>
             <td><%= site.acc_warnings %></td>
+            <td>
+              <% if site.github_repo && site.github_repo != '' %>
+                <%= link_to "repo", "https://github.com/#{site.github_user}/#{site.github_repo}" %>
+              <% end %>
+            </td>
             <td><%= site.github_status %></td>
             <td><%= link_to 'Delete', site_path(site),
                   method: :delete,
@@ -35,6 +45,23 @@
         <% end %>
       </tbody>
     </table>
+  </div>
+</div>
+<div class="usa-grid">
+  <div class="usa-width-one-half">
+    <h3>Error Type Summary</h3>
+    <% Pa11yIssue.type_summary.each do |issue| %>
+    <p>
+      <ul>
+        <li><b>Type:</b> <%= issue[:name] %></li>
+        <li>Count: <%= issue[:value] %></li>
+      </ul>    
+    </p>
+    <p>
+      <b>Sample Description:</b> <%= issue[:description] %>
+    </p>
+    <hr>
+    <% end %>
   </div>
 </div>
 
