@@ -49,7 +49,7 @@ class Page < ActiveRecord::Base
   end
 
   def acc_errors_fixed
-    self.pa11y_issues.where(fixed: true)
+    self.pa11y_fixed
   end
 
   def run_scan
@@ -106,7 +106,7 @@ class Page < ActiveRecord::Base
   end
 
   def pa11y_fixed
-    self.pa11y_issues.where(fixed: true)
+    self.pa11y_issues.where("fixed= 'true' AND issue_type= 'error'")
   end
 
   def issues_md
