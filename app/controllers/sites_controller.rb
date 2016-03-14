@@ -3,7 +3,7 @@ class SitesController < ApplicationController
     @site = Site.find(params[:id])
   end
   def index
-    @sites = Site.find_each
+    @sites = Site.all
   end
 
   def new

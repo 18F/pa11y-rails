@@ -29,6 +29,7 @@
 
 <div class="usa-grid">
   <div class="usa-width-one-whole">
+    
     <% page.pa11y_errors.find_each do |issue| %>
       <%= render partial: 'pa11y_issues/issue', locals: {issue: issue} %>
     <% end %>

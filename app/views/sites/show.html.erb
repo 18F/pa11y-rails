@@ -11,7 +11,7 @@
       <%= @site.title %></li>
       <% if @site.github_url %>
         <li><strong>Github: </strong>
-          <%= link_to @site.github_url, @site.github_url %>
+          <%= link_to @site.github_url, @site.github_url, html_options = {target: '_blank'} %>
         </li>
       <% end %>
       <li><strong>Total Errors:</strong>
@@ -23,9 +23,11 @@
       <li><strong>Github Issues:</strong></li>
       <ul>
         <% @site.issues.each do |issue| %>
-          <li><strong>ID:</strong><%= issue.github_id %></li>
+          <li><strong>Title: </strong><%= issue.title %></li>
           <ul>
-            <li><strong>Status: </strong><%= link_to issue.status, issue.link %></li>
+            <li><strong>ID:</strong><%= issue.github_id %></li>
+            <li><strong>Status: </strong><%= link_to issue.status, issue.link, html_options = {target: '_blank'} %></li>
+            <li><strong>Date: </strong><%= issue.created_at %></li>
             <li><%= link_to 'Delete Issue', [issue.site, issue],
                   method: :delete,
                   data: { confirm: 'Are you sure?' } %></li>
@@ -61,7 +63,7 @@
       <tbody>
         <% @site.pages.each do |page| %>
           <tr>
-            <td><%= link_to page.url, page.url %></td>
+            <td><%= link_to page.url, page.url, html_options = {target: '_blank'} %></td>
             <td><%= page.acc_errors %></td>
             <td><%= page.acc_warnings %></td>
             <td><%= link_to 'Report', "#scan-#{page.id}" %></td>

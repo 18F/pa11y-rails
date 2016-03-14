@@ -49,10 +49,11 @@ class Site < ActiveRecord::Base
   # end
 
   def create_github_issue
+    self.update_scan
     github = Github.new user: "#{self.github_user}", repo: "#{self.github_repo}"
     issue = github.issues.create title: '508 Issues from pa11y-rails', body: self.github_issue_string
     if issue.body.number
-      self.issues.create({github_id: issue.body.number})
+      self.issues.create({github_id: issue.body.number, title: "508 Issues from pa11y-rails"})
     end
     puts issue 
   end
@@ -70,6 +71,7 @@ class Site < ActiveRecord::Base
     @pages.each do |page|
       page.update_scan(0)
     end
+    self.find_github_issues()
   end
 
   def github_scan
@@ -94,10 +96,10 @@ class Site < ActiveRecord::Base
   def find_github_issues
     if github_url
       issues = Github::Client::Issues.new
-      list = issues.list user: self.github_user, repo: self.github_repo, state: 'open'
+      list = issues.list user: self.github_user, repo: self.github_repo, state: 'open', auto_pagination: true
       list.each do |issue|
-        if issue.is_a?(Hash) && issue.title && issue.number && issue.title == "508 Issues from pa11y-rails"
-          self.issues.create({github_id: issue.number})
+        if issue.is_a?(Hash) && issue.title && issue.number && issue.title.include?("508")
+          self.issues.create({github_id: issue.number, title: issue.title})
         end
       end
     end
