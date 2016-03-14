@@ -1,6 +1,7 @@
 class Site < ActiveRecord::Base
   has_many :pages, dependent: :destroy
   has_many :issues, dependent: :destroy
+  after_create :create_homepage
   after_save :find_github_issues
 
   def acc_errors
@@ -16,7 +17,9 @@ class Site < ActiveRecord::Base
   def acc_errors_fixed
     fixed = 0
     self.pages.each do |page|
-      fixed += page.acc_errors_fixed.count
+      unless page.acc_errors_fixed.nil?
+        fixed += page.acc_errors_fixed
+      end
     end
     fixed
   end
@@ -110,5 +113,14 @@ class Site < ActiveRecord::Base
       total_errors += site.acc_errors
     end
     total_errors
+  end
+
+  def create_homepage
+    github = Github.new
+    repo = github.repos.find user: self.github_user, repo: self.github_repo
+    homepage = repo.body["homepage"]
+    if homepage && homepage.include?(".gov")
+      self.pages.create_with({url: homepage}).find_or_create_by(title: homepage)
+    end
   end
 end

@@ -43,7 +43,7 @@ class SitesController < ApplicationController
   def scanAll
     @sites = Site.all 
     update_scans(@sites)
-    render 'index'
+    redirect_to sites_path
   end
 
   def error_report

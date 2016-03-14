@@ -25,10 +25,12 @@ class Page < ActiveRecord::Base
   end
 
   def update_issue_count
-    self.acc_errors = 0;
-    self.acc_notices = 0;
-    self.acc_warnings = 0;
-    self.acc_ignore = 0;
+    self.acc_errors   = 0
+    self.acc_notices  = 0
+    self.acc_warnings = 0
+    self.acc_ignore   = 0
+    self.acc_errors_fixed  = self.pa11y_fixed.count
+
     self.pa11y_issues.find_each do |issue|
       if issue.ignore
         self.increment(:acc_ignore, by = 1)
@@ -46,10 +48,6 @@ class Page < ActiveRecord::Base
       end
     end
     self.save
-  end
-
-  def acc_errors_fixed
-    self.pa11y_fixed
   end
 
   def run_scan

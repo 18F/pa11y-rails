@@ -81,7 +81,7 @@ repos.body.each do |repo|
     #   title: repo.name,
     #   github_repo: repo.name,
     #   github_user: '18f'})
-    sleep(0.25)
-    site.pages.create_with({url: repo.homepage}).find_or_create_by(title: repo.homepage)
+    # sleep(0.25)
+    # site.pages.create_with({url: repo.homepage}).find_or_create_by(title: repo.homepage)
   end
 end
