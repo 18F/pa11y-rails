@@ -26,7 +26,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'whenever', :require => false
 gem 'github_api'
 gem 'pg'
-
+gem 'will_paginate', '~> 3.0.6'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

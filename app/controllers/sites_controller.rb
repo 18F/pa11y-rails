@@ -3,7 +3,7 @@ class SitesController < ApplicationController
     @site = Site.find(params[:id])
   end
   def index
-    @sites = Site.includes(:pages, :issues)
+    @sites = Site.paginate(:page => params[:page], :per_page => 10).includes(:pages, :issues)
   end
 
   def new

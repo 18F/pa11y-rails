@@ -47,6 +47,7 @@
         <% end %>
       </tbody>
     </table>
+    <%= will_paginate @sites %>
   </div>
 </div>
 <div class="usa-grid">
@@ -68,10 +69,10 @@
 </div>
 
 <script type="text/javascript">
-  $(document).ready(function(){
-    $('#mainTable').DataTable({
-        "order": [[ 2, "desc" ]],
-        "lengthMenu": [[50, 100, -1], [50, 100, "All"]]
-    });
-  });
+  // $(document).ready(function(){
+  //   $('#mainTable').DataTable({
+  //       "order": [[ 2, "desc" ]],
+  //       "lengthMenu": [[50, 100, -1], [50, 100, "All"]]
+  //   });
+  // });
 </script>
