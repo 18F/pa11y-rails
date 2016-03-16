@@ -1,9 +1,10 @@
 class SitesController < ApplicationController
+  helper_method :sort_column, :sort_direction
   def show
     @site = Site.find(params[:id])
   end
   def index
-    @sites = Site.paginate(:page => params[:page], :per_page => 10).includes(:pages, :issues)
+    @sites = Site.order(sort_column + " " + sort_direction).paginate(:page => params[:page], :per_page => 10).includes(:pages, :issues)
   end
 
   def new
@@ -66,9 +67,18 @@ class SitesController < ApplicationController
     def site_params
       params.require(:site).permit(:title, :url, :github_repo, :github_user)
     end
+
     def update_scans sites = Site.all
       sites.each do |site|
         site.update_scan
       end
+    end
+
+    def sort_column
+      Site.column_names.include?(params[:sort]) ? params[:sort] : "title"
+    end
+    
+    def sort_direction
+      %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
     end
 end

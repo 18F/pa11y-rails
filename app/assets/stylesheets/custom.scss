@@ -54,3 +54,28 @@ div.fixed-true{
   float: left;
   text-align: center;
 }
+
+div.pagination a, div.pagination span, div.pagination em {
+  border: 1px solid black;
+  padding: 5px;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+}
+div.pagination a {
+  color: #ffffff;
+  background-color: blue;
+}
+.pretty th .current {
+  padding-right: 12px;
+  background-repeat: no-repeat;
+  background-position: right center;
+}
+
+th .asc::after{
+  content: " ↑";
+}
+
+th .desc::after {
+  content: " ↓";
+}
