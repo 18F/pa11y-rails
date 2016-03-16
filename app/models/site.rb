@@ -104,12 +104,9 @@ class Site < ActiveRecord::Base
   end
 
   def github_status
-    if self.issues.length > 0
-      self.issues.last.status 
-    else
-      ''
-    end
+    self.issues.length > 0 ? self.issues.last.status : ''
   end
+
   def find_github_issues
     if github_url
       issues = Github::Client::Issues.new
@@ -122,13 +119,6 @@ class Site < ActiveRecord::Base
         end
       end
     end
-  end
-  def self.error_total
-    total_errors = 0
-    self.all.find_each do |site|
-      total_errors += site.acc_errors
-    end
-    total_errors
   end
 
   def create_homepage

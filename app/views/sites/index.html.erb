@@ -6,7 +6,7 @@
       <li><%= link_to 'Update Scans', sites_update_scans_path %></li>
       <li>
         <h3>Error Total:</h3>
-        <%= Site.error_total %>
+        <%= Pa11yIssue.error_total %>
       </li>
     </ul>
   </div>
@@ -30,7 +30,7 @@
         <% @sites.each do |site| %>
           <tr>
             <td><%= link_to site.title, site_path(site.id) %></td>
-            <td><%= site.pages.count %></td>
+            <td><%= site.pages_count %></td>
             <td><%= site.acc_errors %></td>
             <td><%= site.acc_warnings %></td>
             <td><%= site.acc_errors_fixed %></td>
@@ -53,16 +53,16 @@
   <div class="usa-width-one-half">
     <h3>Error Type Summary</h3>
     <% Pa11yIssue.type_summary.each do |issue| %>
-    <p>
-      <ul>
-        <li><b>Type:</b> <%= issue[:name] %></li>
-        <li>Count: <%= issue[:value] %></li>
-      </ul>    
-    </p>
-    <p>
-      <b>Sample Description:</b> <%= issue[:description] %>
-    </p>
-    <hr>
+      <p>
+        <ul>
+          <li><b>Type:</b> <%= issue[:name] %></li>
+          <li>Count: <%= issue[:value] %></li>
+        </ul>    
+      </p>
+      <p>
+        <b>Sample Description:</b> <%= issue[:description] %>
+      </p>
+      <hr>
     <% end %>
   </div>
 </div>

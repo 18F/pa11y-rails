@@ -3,7 +3,7 @@ class SitesController < ApplicationController
     @site = Site.find(params[:id])
   end
   def index
-    @sites = Site.all
+    @sites = Site.includes(:pages, :issues)
   end
 
   def new
