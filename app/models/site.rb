@@ -4,34 +4,48 @@ class Site < ActiveRecord::Base
   after_create :create_homepage
   after_save :find_github_issues
 
-  def acc_errors
+  def update_stats
+    self.update_acc_errors
+    self.update_acc_errors_fixed
+    self.update_acc_warnings
+    self.update_page_count
+    self.save
+  end
+
+  def update_page_count
+    self.pages_count = self.pages.count 
+  end
+
+  def update_acc_errors
     errors = 0
-    self.pages.find_each do |page|
+    self.pages.each do |page|
       unless !page.acc_errors
         errors += page.acc_errors
       end
     end
-    errors
+    self.acc_errors = errors
   end
 
-  def acc_errors_fixed
+  def update_acc_errors_fixed
     fixed = 0
     self.pages.each do |page|
       unless page.acc_errors_fixed.nil?
         fixed += page.acc_errors_fixed
       end
     end
-    fixed
+    self.acc_errors_fixed = fixed
   end
 
-  def acc_warnings
+  def update_acc_warnings
     warnings = 0
-    self.pages do |page|
+    self.pages.each do |page|
+      puts "#{page.title}"
+      puts !page.acc_warnings
       unless !page.acc_warnings
         warnings += page.acc_warnings
       end
     end
-    warnings
+    self.acc_warnings = warnings
   end
 
   def github_url
@@ -102,7 +116,9 @@ class Site < ActiveRecord::Base
       list = issues.list user: self.github_user, repo: self.github_repo, state: 'open', auto_pagination: true
       list.each do |issue|
         if issue.is_a?(Hash) && issue.title && issue.number && issue.title.include?("508")
-          self.issues.create({github_id: issue.number, title: issue.title})
+          self.issues.create_with({title:  issue.title})
+                     .find_or_create_by(github_id: issue.number)
+          # self.issues.create({github_id: issue.number, title: issue.title})
         end
       end
     end

@@ -7,6 +7,11 @@ class Page < ActiveRecord::Base
   validates :url, presence: true,
                     length: { minimum: 3 }
   after_create :run_scan
+  after_save :update_site_counts
+
+  def update_site_counts
+    Site.find(self.site_id).update_stats
+  end
 
   def update_scan time=5000
     if Time.now - self.updated_at > time

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160314215717) do
+ActiveRecord::Schema.define(version: 20160316160946) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,14 +61,16 @@ ActiveRecord::Schema.define(version: 20160314215717) do
   create_table "sites", force: :cascade do |t|
     t.string   "title"
     t.string   "url"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
     t.text     "scan"
     t.integer  "acc_warnings"
     t.integer  "acc_errors"
     t.integer  "acc_notices"
     t.string   "github_user"
     t.string   "github_repo"
+    t.integer  "acc_errors_fixed"
+    t.integer  "pages_count"
   end
 
   add_foreign_key "issues", "sites"
