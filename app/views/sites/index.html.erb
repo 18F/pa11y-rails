@@ -16,13 +16,13 @@
     <table id='mainTable' class='usa-table-borderless'>
       <thead>
         <tr>
-          <th scope='col'>Title</th>
-          <th scope='col'>Pages</th>
-          <th scope='col'>Errors</th>
-          <th scope='col'>Warnings</th>
-          <th scope='col'>Fixed</th>
-          <th scope='col'>Github</th>
-          <th scope='col'>Github Status</th>
+          <th scope='col'><%= sortable "title" %></th>
+          <th scope='col'><%= sortable "pages_count" %></th>
+          <th scope='col'><%= sortable "acc_errors", "Errors" %></th>
+          <th scope='col'><%= sortable "acc_warnings", "Warnings" %></th>
+          <th scope='col'><%= sortable "acc_errors_fixed", "Fixed Errors" %></th>
+          <th scope='col'>github</th>
+          <th scope='col'>github status</th>
           <th scope='col'>Delete?</th>
         </tr>
       </thead>
@@ -47,6 +47,7 @@
         <% end %>
       </tbody>
     </table>
+    <%= will_paginate @sites %>
   </div>
 </div>
 <div class="usa-grid">
@@ -68,10 +69,10 @@
 </div>
 
 <script type="text/javascript">
-  $(document).ready(function(){
-    $('#mainTable').DataTable({
-        "order": [[ 2, "desc" ]],
-        "lengthMenu": [[50, 100, -1], [50, 100, "All"]]
-    });
-  });
+  // $(document).ready(function(){
+  //   $('#mainTable').DataTable({
+  //       "order": [[ 2, "desc" ]],
+  //       "lengthMenu": [[50, 100, -1], [50, 100, "All"]]
+  //   });
+  // });
 </script>
