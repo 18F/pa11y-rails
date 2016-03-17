@@ -17,12 +17,12 @@
       <thead>
         <tr>
           <th scope='col'><%= sortable "title" %></th>
-          <th scope='col'><%= sortable "pages" %></th>
-          <th scope='col'><%= sortable "errors" %></th>
-          <th scope='col'><%= sortable "warnings" %></th>
-          <th scope='col'><%= sortable "fixed" %></th>
-          <th scope='col'><%= sortable "github" %></th>
-          <th scope='col'><%= sortable "github status" %></th>
+          <th scope='col'><%= sortable "pages_count" %></th>
+          <th scope='col'><%= sortable "acc_errors" %></th>
+          <th scope='col'><%= sortable "acc_warnings" %></th>
+          <th scope='col'><%= sortable "acc_errors_fixed" %></th>
+          <th scope='col'>github</th>
+          <th scope='col'>github status</th>
           <th scope='col'>Delete?</th>
         </tr>
       </thead>
@@ -30,7 +30,7 @@
         <% @sites.each do |site| %>
           <tr>
             <td><%= link_to site.title, site_path(site.id) %></td>
-            <td><%= site.pages.count %></td>
+            <td><%= site.pages_count %></td>
             <td><%= site.acc_errors %></td>
             <td><%= site.acc_warnings %></td>
             <td><%= site.acc_errors_fixed %></td>

@@ -75,10 +75,10 @@ class SitesController < ApplicationController
     end
 
     def sort_column
-      Site.column_names.include?(params[:sort]) ? params[:sort] : "title"
+      Site.column_names.include?(params[:sort]) ? params[:sort] : "acc_errors"
     end
     
     def sort_direction
-      %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+      %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc"
     end
 end
