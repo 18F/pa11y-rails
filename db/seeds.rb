@@ -59,7 +59,7 @@
 # end
 # require 'Github'
 
-
+puts "****Running Seeds****"
 #skip these URL's
 skip = ['https://blogalytics.18f.gov']
 Github.configure do |c|
@@ -68,11 +68,12 @@ Github.configure do |c|
 end
 github = Github.new
 repos = github.repos.list user:"18f", auto_pagination: true
-
+puts "****repos received****"
 repos.body.each do |repo|
   puts repo.name
   puts repo.homepage
 end
+puts "Creating Sites"
 repos.body.each do |repo|
   puts repo.homepage
   if repo.homepage && repo.homepage.include?(".gov") && !skip.include?(repo.homepage)

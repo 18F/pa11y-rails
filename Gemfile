@@ -24,7 +24,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'whenever', :require => false
-gem 'github_api'
+gem 'github_api', '~> 0.14.5'
 gem 'pg'
 gem 'will_paginate', '~> 3.0.6'
 # Use ActiveModel has_secure_password
