@@ -3,6 +3,7 @@ A rails app that tracks 18f's various app's accessibility using the pa11y CLI to
 
 ## Setup
 1. Install [pa11y](https://github.com/springernature/pa11y)
+* Note: You will need if you receive a `Promise` error, update to the latest version of node/npm and reinstall pa11y
 2. Install Ruby 2.3.3 with your ruby manager of choice
 3. Install bundler `gem install bundler`
 4. Run `bundle install`
